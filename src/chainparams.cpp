@@ -13,6 +13,11 @@
 
 using namespace boost::assign;
 
+unsigned int pnSeed[] =
+{
+0xc0a1372d
+};
+
 struct SeedSpec6 {
     uint8_t addr[16];
     uint16_t port;
@@ -98,6 +103,21 @@ public:
         convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
         nLastPOWBlock = 102;
+		
+		// Convert the pnSeeds array into usable address objects.
+        for (unsigned int i = 0; i < ARRAYLEN(pnSeed); i++)
+        {
+            // It'll only connect to one or two seed nodes because once it connects,
+            // it'll get a pile of addresses with newer timestamps.
+            // Seed nodes are given a random 'last seen time' of between one and two
+            // weeks ago.
+            const int64_t nOneWeek = 7*24*60*60;
+            struct in_addr ip;
+            memcpy(&ip, &pnSeed[i], sizeof(ip));
+            CAddress addr(CService(ip, GetDefaultPort()));
+            addr.nTime = GetTime() - GetRand(nOneWeek) - nOneWeek;
+            vFixedSeeds.push_back(addr);
+        }
     }
 
     virtual const CBlock& GenesisBlock() const { return genesis; }

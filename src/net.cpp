@@ -1079,7 +1079,7 @@ void MapPort(bool)
 
 void ThreadDNSAddressSeed()
 {
-    // goal: only query DNS seeds if address need is acute
+ /*   // goal: only query DNS seeds if address need is acute
     if ((addrman.size() > 0) &&
         (!GetBoolArg("-forcednsseed", false))) {
         MilliSleep(11 * 1000);
@@ -1090,7 +1090,7 @@ void ThreadDNSAddressSeed()
             return;
         }
     }
-
+*/
     const vector<CDNSSeedData> &vSeeds = Params().DNSSeeds();
     int found = 0;
 
